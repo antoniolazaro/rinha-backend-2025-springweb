@@ -1,0 +1,76 @@
+services:
+  nginx:
+    image: nginx:1.25
+    container_name: nginx-rinha-spring-web
+    ports:
+      - "9999:9999"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - rinha-backend-spring-web
+    deploy:
+      resources:
+        limits:
+          cpus: "0.15"
+          memory: 15MB
+  app1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app1-rinha-spring-web
+    hostname: app1
+    environment:
+      SPRING_DATA_REDIS_HOST: redis
+      PAYMENT_PROCESSOR_URL_DEFAULT: http://payment-processor-default:8080
+      PAYMENT_PROCESSOR_URL_FALLBACK: http://payment-processor-fallback:8080
+    ports:
+      - "8081:8080"
+    networks:
+      - rinha-backend-spring-web
+      - payment-processor
+    deploy:
+      resources:
+        limits:
+          cpus: "0.35"
+          memory: 300MB
+
+  app2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app2-rinha-spring-web
+    hostname: app2
+    environment:
+      SPRING_DATA_REDIS_HOST: redis
+      PAYMENT_PROCESSOR_URL_DEFAULT: http://payment-processor-default:8080
+      PAYMENT_PROCESSOR_URL_FALLBACK: http://payment-processor-fallback:8080
+    ports:
+      - "8082:8080"
+    networks:
+      - rinha-backend-spring-web
+      - payment-processor
+    deploy:
+      resources:
+        limits:
+          cpus: "0.35"
+          memory: 300MB
+  redis:
+    image: redis:7
+    container_name: redis-rinha-spring-web
+    hostname: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - rinha-backend-spring-web
+    deploy:
+      resources:
+        limits:
+          cpus: "0.15"
+          memory: 140M
+networks:
+  rinha-backend-spring-web:
+    name: rinha-backend-spring-web
+    driver: bridge
+  payment-processor:
+    external: true
+

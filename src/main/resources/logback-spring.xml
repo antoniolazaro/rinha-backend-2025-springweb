@@ -1,0 +1,42 @@
+<configuration debug="true">
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Async appender que delega para o CONSOLE -->
+    <appender name="ASYNC_CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="CONSOLE" />
+        <!-- opcional: tamanho da fila, timeout, etc -->
+    </appender>
+
+    <root level="INFO">
+        <!-- Usa o appender assíncrono -->
+        <appender-ref ref="ASYNC_CONSOLE" />
+    </root>
+
+    <!-- Appender para arquivos -->
+<!--    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        &lt;!&ndash; Utilizando a variável de ambiente para definir o diretório de log &ndash;&gt;-->
+<!--        <file>${LOG_DIR:-./logs}/application-commerce.log</file>-->
+<!--        <encoder>-->
+<!--            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>-->
+<!--        </encoder>-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            &lt;!&ndash; Rola o arquivo diariamente e retém 30 dias de histórico &ndash;&gt;-->
+<!--            <fileNamePattern>${LOG_DIR:-./logs}/archived/application.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>-->
+<!--            <maxHistory>7</maxHistory>-->
+<!--            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+<!--                <maxFileSize>10MB</maxFileSize>-->
+<!--            </timeBasedFileNamingAndTriggeringPolicy>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
+    <!--
+        <logger name="logging.level.com.rinhabackend.antonio" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+           <appender-ref ref="FILE"/>>
+    </logger>
+        -->
+</configuration>
